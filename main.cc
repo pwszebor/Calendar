@@ -8,7 +8,8 @@ int main(int argc, char **argv) {
     opt::options_description description("Options");
     description.add_options()
             ("help,h", "Print help message")
-            ("year,y", opt::value<uns_short>(), "Display calendar for given year");
+            ("year,y", opt::value<uns_short>(), "Display calendar for given year")
+            ("grid,g", "Display calendar in a 4x3 grid");
 
     opt::variables_map variablesMap;
     try {
@@ -24,15 +25,15 @@ int main(int argc, char **argv) {
             if(year < 1400 || year > 10000)
                 throw opt::error("Year argument is out of valid range [1400, 10000].");
             Calendar::Calendar calendar(year);
-            calendar.display(std::cout);
+            variablesMap.count("grid") ? calendar.displayInAGrid(std::cout) : calendar.display(std::cout);
             return 1;
         }
         std::cout << description << "\n";
         return 0;
     }
     catch (opt::error &error) {
-        std::cerr << "ERROR: " << error.what() << "\n";
-        std::cerr << description << "\n";
+        std::cerr << "\nERROR: " << error.what() << "\n";
+        std::cerr << "\n" << description << "\n";
         return -1;
     }
 }

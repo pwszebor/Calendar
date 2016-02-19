@@ -27,6 +27,26 @@ void Calendar::display(std::ostream &str) {
     }
 }
 
+void Calendar::displayInAGrid(std::ostream &str) {
+    auto months = getMonths();
+    for(auto row = 0; row < 4; ++row) {
+        str << getMonthName(months.at(3 * row)) << "   "
+            << getMonthName(months.at(3 * row + 1)) << "   "
+            << getMonthName(months.at(3 * row + 2)) << "\n";
+        auto weeks1 = getWeeks(months.at(3 * row));
+        auto weeks2 = getWeeks(months.at(3 * row + 1));
+        auto weeks3 = getWeeks(months.at(3 * row + 2));
+        for(auto line = 1; line <= 6; ++line) {
+            line <= weeks1.size() ? str << formatWeek(weeks1.at(line - 1)) : str << boost::str(boost::format("%|22t|"));
+            str << "   ";
+            line <= weeks2.size() ? str << formatWeek(weeks2.at(line - 1)) : str << boost::str(boost::format("%|22t|"));
+            str << "   ";
+            line <= weeks3.size() ? str << formatWeek(weeks3.at(line - 1)) : str << boost::str(boost::format("%|22t|"));
+            str << "\n";
+        }
+    }
+}
+
 std::vector<DateRange> Calendar::getMonths() {
     std::vector<DateRange> months;
     auto monthBegin = yearRange_.first;

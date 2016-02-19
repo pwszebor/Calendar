@@ -29,6 +29,7 @@ public:
     ~Calendar();
 
     void display(std::ostream &str);
+    void displayInAGrid(std::ostream &str);
 
 private:
     std::vector<DateRange> getMonths();
